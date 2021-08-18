@@ -5,10 +5,10 @@ pipeline{
       ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
     }
 
-     parameters {
-      string(name: 'inventory_file', defaultValue: 'dev',  description: 'selecting the environment')
-          }
-     
+      parameters {
+      string(name: 'inventory', defaultValue: 'dev',  description: 'This is the inventory file for the environment to deploy configuration')
+    }
+
 
    stages{
 
@@ -35,15 +35,15 @@ pipeline{
 
       stage('Run Ansible') {
         steps {
-          ansiblePlaybook become: true, colorized: true, credentialsId: 'Jenkins-ansible', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/dev', playbook: 'playbooks/site.yml'
+          ansiblePlaybook become: true, colorized: true, credentialsId: 'Jenkins-ansible', disableHostKeyChecking: true, installation: 'ansible', inventory: '${inventory}', playbook: 'playbooks/site.yml'
         }
       }
 
-      // stage('Clean Workspace after build'){
-      //   steps{
-      //     cleanWs()
-      //   }
-      // }
+      stage('Clean Workspace after build'){
+        steps{
+          cleanWs()
+        }
+      }
    }
 }  
 
