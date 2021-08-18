@@ -1,0 +1,21 @@
+---
+# tasks file for sonarqube
+- name: install java 11
+  ansible.builtin.yum:
+    name: java-11-openjdk-devel
+    state: present
+
+- import_tasks: postgresql.yml
+
+- name: Ensure group sonar exists
+  ansible.builtin.group:
+    name: sonar
+    state: sonar
+
+- import_tasks: sonarqube-setup.yml
+
+- name: start and enable sonarqube
+  ansible.builtin.service:
+    name: sonar
+    state: started
+    enabled: yes
