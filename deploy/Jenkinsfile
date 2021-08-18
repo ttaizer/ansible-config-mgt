@@ -34,7 +34,7 @@ pipeline{
 
       stage('Run Ansible') {
         steps {
-           ansiblePlaybook become: true, colorized: true, credentialsId: 'Jenkins-ansible', installation: 'ansible', inventory: 'inventory/dev', playbook: 'playbooks/site.yml'
+           ansiblePlaybook become: true, colorized: true, credentialsId: 'Jenkins-ansible', installation: 'ansible', inventory: 'inventory/dev', playbooks: 'playbooks/site.yml'
         }
       }
 
