@@ -23,16 +23,24 @@
 
 - name: install artifactory
   ansible.builtin.yum:
+    update_cache: yes
+   
+- name: install artifactory
+  ansible.builtin.yum:
     name: jfrog-artifactory-oss
     update_cache: yes
     state: present
 
 
+# - name: Create a symbolic link
+#   ansible.builtin.file:
+#     src: /etc/opt/jfrog/artifactory/
+#     dest: /opt/jfrog/artifactory
+#     state: link
+#     remote_src: yes
+
 - name: Create a symbolic link
-  ansible.builtin.file:
-    src: /etc/opt/jfrog/artifactory/
-    dest: /opt/jfrog/artifactory
-    state: link
+  command: ln -s /etc/opt/jfrog/artifactory/ /opt/jfrog/artifactory
 
 - name: set up enviromanet variables
   command: echo "export ARTIFACTORY_HOME=/opt/jfrog/artifactory" >> /etc/profile

@@ -14,6 +14,17 @@
 - python2 -m  pip install psycopg2-binary
 
 
+# Install remi repo, php and git
+=====================================
+- yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+- yum install -y dnf-utils http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+- yum install -y  git
+- yum module reset php -y
+- yum module enable php:remi-7.4 -y
+- yum install -y php  php-common php-mbstring php-opcache php-intl php-xml php-gd php-curl php-mysqlnd     php-fpm php-json
+- systemctl start php-fpm
+- systemctl enable php-fpm
+
 * For Mysql Database
 - ansible-galaxy collection install community.mysql
 
