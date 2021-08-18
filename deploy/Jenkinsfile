@@ -12,19 +12,20 @@ pipeline{
 
    stages{
 
-      // stage("Initial cleanup") {
-      //     steps {
-      //       dir("${WORKSPACE}") {
-      //         deleteDir()
-      //       }
-      //     }
-      //   }
+      stage("Initial cleanup") {
+          steps {
+            dir("${WORKSPACE}") {
+              deleteDir()
+            }
+          }
+        }
 
       stage('Checkout SCM') {
          steps{
             git branch: 'feature/jenkinspipeline-stages', url: 'https://github.com/Livingstone95/project-14-ci-cd.git'
          }
        }
+       
       stage('Prepare Ansible For Execution') {
         steps {
           sh 'echo ${WORKSPACE}'          
