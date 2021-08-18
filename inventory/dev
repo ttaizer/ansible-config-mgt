@@ -1,9 +1,9 @@
 [nginx]
-172.31.3.113 ansible_ssh_user = 'ec2-user'
+172.31.3.113 ansible_ssh_user='ec2-user'
 
 [db:vars]
 ansible_user=ubuntu
 ansible_python_interpreter=/usr/bin/python
 
 [db]
-172.31.5.195 ansible_ssh_user = 'ubuntu'
+172.31.5.195 ansible_ssh_user='ubuntu'
