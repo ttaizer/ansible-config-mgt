@@ -7,12 +7,14 @@
 - yum module reset php 
 - yum module enable php:remi-7.4 
 - yum install python3-pip
-- python3 -m install --upgrade setuptools
-- python3 -m install --upgrade pip
+- python3 -m pip install --upgrade setuptools
+- python3 -m pip install --upgrade pip
+- python3 -m pip install PyMySQL
+- python3 -m pip install mysql-connector-python
+- python2 -m  pip install psycopg2-binary
 
 
 * For Mysql Database
-- python3 -m pip install PyMySQL
 - ansible-galaxy collection install community.mysql
 
 * For Postgresql Database
