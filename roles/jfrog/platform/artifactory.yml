@@ -1,4 +1,0 @@
----
-- hosts: artifactory_servers
-  roles:
-    - artifactory
