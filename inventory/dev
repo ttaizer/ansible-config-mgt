@@ -7,3 +7,6 @@
 
 [artifactory]
 172.31.8.163
+
+[sonar]
+172.31.14.34 ansible_ssh_user='ubuntu'

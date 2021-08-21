@@ -11,7 +11,7 @@
 - python3 -m pip install --upgrade pip
 - python3 -m pip install PyMySQL
 - python3 -m pip install mysql-connector-python
-- python2 -m  pip install psycopg2-binary
+- python3 -m pip install psycopg2==2.7.5 --ignore-installed
 
 
 # Install remi repo, php and git
