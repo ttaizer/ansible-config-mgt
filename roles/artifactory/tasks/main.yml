@@ -1,15 +1,23 @@
 ---
 # tasks file for artifactory
+
 - name: install java 11
   ansible.builtin.yum:
     name: java-11-openjdk-devel
     state: present
 
-- name: set up java enviroment variable
+- name: install java 11
+  ansible.builtin.yum:
+    name: 
+      - wget
+      - unzip
+    state: present
+
+- name: Configuring java path
   ansible.builtin.template:
-    src: templates/bash_profile.j2
+    src: templates/bash-profile.j2
     dest: .bash_profile
-    force: yes
+  
 
 - name: reload the /etc/profile
   shell: source ~/.bash_profile
@@ -18,27 +26,24 @@
 - name: add the repository key to repos list
   ansible.builtin.get_url:
     url:  https://releases.jfrog.io/artifactory/artifactory-rpms/artifactory-rpms.repo 
-    dest: /etc/yum.repos.d/jfrog-artifactory-rpms.repo
+    dest: /home/ec2-user/jfrog-artifactory-rpms.repo
     mode: '0755'
+ 
+- name: Copy the downloaded file to the etc repo
+  ansible.builtin.copy:
+    src: /home/ec2-user/jfrog-artifactory-rpms.repo
+    dest: /etc/yum.repos.d/jfrog-artifactory-rpms.repo
+    remote_src: yes
+    follow: yes
+
+- name: update cache
+  ansible.builtin.yum:
+    update_cache: yes
 
 - name: install artifactory
   ansible.builtin.yum:
     name: jfrog-artifactory-oss
-    update_cache: yes
     state: present
-
-
-- name: Create a symbolic link
-  ansible.builtin.file:
-    src: /etc/opt/jfrog/artifactory/
-    dest: /opt/jfrog/artifactory
-    state: link
-
-- name: set up enviromanet variables
-  command: echo "export ARTIFACTORY_HOME=/opt/jfrog/artifactory" >> /etc/profile
-
-- name: reload the /etc/profile
-  shell: . /etc/profile
 
 - name: start and enable artifactory
   ansible.builtin.service:
