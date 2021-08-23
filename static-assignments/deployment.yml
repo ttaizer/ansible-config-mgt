@@ -12,14 +12,6 @@
           - http://rpms.remirepo.net/enterprise/remi-release-8.rpm
         disable_gpg_check: yes
 
-    # - name: install remi
-    #   command: yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-          
-    # - name: install dnf
-    #   command: yum install dnf-utils 
-    
-    # name: install remi
-    # command: yum install http://rpms.remirepo.net/enterprise/remi-release-8.rpm  
     
     - name: install httpd on the webserver
       ansible.builtin.yum:
