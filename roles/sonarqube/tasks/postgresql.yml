@@ -34,8 +34,7 @@
   community.postgresql.postgresql_db:
     name: sonarqube
     encoding: UTF-8
-    lc_collate: de_DE.UTF-8
-    lc_ctype: de_DE.UTF-8
+
    
 
 - name: Create user sonarqube
