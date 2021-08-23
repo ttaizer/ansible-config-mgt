@@ -10,6 +10,7 @@
           - https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
           - dnf-utils
           - http://rpms.remirepo.net/enterprise/remi-release-8.rpm
+        disable_gpg_check: yes
 
     # - name: install remi
     #   command: yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
