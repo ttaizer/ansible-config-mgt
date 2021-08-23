@@ -11,7 +11,7 @@
     #       - dnf-utils
     #       - http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 
-    - name: install remi and rhel
+    - name: install remi
       command: yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
           
     - name: install dnf
