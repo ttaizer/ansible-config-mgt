@@ -29,8 +29,8 @@ pipeline{
       stage('Prepare Ansible For Execution') {
         steps {
           sh 'echo ${WORKSPACE}' 
-          sh 'sed -i "2 a inventory=${WORKSPACE}/inventory/" /home/ec2-user/project/project-14-ci-cd/deploy/ansible.cfg'
-          sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" /home/ec2-user/project/project-14-ci-cd/deploy/ansible.cfg'        
+          sh 'sudo sed -i "2 a inventory=${WORKSPACE}/inventory/" /home/ec2-user/project/project-14-ci-cd/deploy/ansible.cfg'
+          sh 'sudo sed -i "3 a roles_path=${WORKSPACE}/roles" /home/ec2-user/project/project-14-ci-cd/deploy/ansible.cfg'        
         }
      }
 
