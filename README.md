@@ -29,11 +29,7 @@
 - ansible-galaxy collection install community.mysql
 
 * For Postgresql Database
-- python3 -m pip install python-psycopg2
 - ansible-galaxy collection install community.postgresql
-
-* For Posix Firewalld
-- ansible-galaxy collection install ansible.posix
 
 * For PHP related process
 - yum --enablerepo=remi install php-phpunit-phploc
