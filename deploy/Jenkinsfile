@@ -21,14 +21,14 @@ pipeline{
 
       stage('Checkout SCM') {
          steps{
-            git branch: 'main', url: 'https://github.com/Livingstone95/project-14-ci-cd.git'
+            git branch: 'main', url: 'hhttps://github.com/Livingstone95/CI-CD.git'
          }
        }
 
       stage('Prepare Ansible For Execution') {
         steps {
           sh 'echo ${WORKSPACE}' 
-          sh 'sudo sed -i "2 inventory=${Wa ORKSPACE}/inventory/" ${WORKSPACE}/deploy/ansible.cfg'
+          sh 'sudo sed -i "2 a inventory=${WORKSPACE}/inventory/" ${WORKSPACE}/deploy/ansible.cfg'
           sh 'sudo sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
         }
      }
