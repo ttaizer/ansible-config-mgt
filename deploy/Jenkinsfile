@@ -28,7 +28,7 @@ pipeline{
       stage('Prepare Ansible For Execution') {
         steps {
           sh 'echo ${WORKSPACE}' 
-          sh 'sudo sed -i "2 a inventory=${WORKSPACE}/inventory/" ${WORKSPACE}/deploy/ansible.cfg'
+          sh 'sudo sed -i "2 inventory=${Wa ORKSPACE}/inventory/" ${WORKSPACE}/deploy/ansible.cfg'
           sh 'sudo sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
         }
      }
@@ -36,7 +36,7 @@ pipeline{
 
       stage('Run Ansible') {
         steps {
-          ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${params.inventory}', playbook: 'playbooks/site.yml'
+          ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/dev', playbook: 'playbooks/site.yml'
          }
       }
 
