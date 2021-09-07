@@ -5,12 +5,11 @@ pipeline{
       ANSIBLE_CONFIG="${WORKSPACE}/deploy/ansible.cfg"
     }
 
-      parameters {
+   parameters {
       string(name: 'inventory', defaultValue: 'dev',  description: 'This is the inventory file for the environment to deploy configuration')
     }
 
    stages{
-
       stage("Initial cleanup") {
           steps {
             dir("${WORKSPACE}") {
@@ -21,28 +20,26 @@ pipeline{
 
       stage('Checkout SCM') {
          steps{
-            git branch: 'main', url: 'https://github.com/Livingstone95/project-14-ci-cd.git'
+            git branch: 'main', url: 'https://github.com/Livingstone95/CI-CD.git'
          }
        }
 
       stage('Prepare Ansible For Execution') {
         steps {
           sh 'echo ${WORKSPACE}' 
-          sh 'sudo sed -i "2 a inventory=${WORKSPACE}/inventory/" ${WORKSPACE}/deploy/ansible.cfg'
-          sh 'sudo sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
+          sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
         }
      }
 
-
-      stage('Run Ansible') {
+      stage('Run Ansible playbook') {
         steps {
-          ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${params.inventory}', playbook: 'playbooks/site.yml'
+          ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/${inventory}', playbook: 'playbooks/site.yml'
          }
       }
 
       stage('Clean Workspace after build'){
         steps{
-          cleanWs()
+          cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
         }
       }
    }

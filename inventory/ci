@@ -9,3 +9,7 @@
 
 [artifact_repository]
 <Artifact_repository-Private-IP-Address>
+
+
+[db]
+172.31.7.194 ansible_ssh_user='ubuntu'
