@@ -1,14 +1,8 @@
 [nginx]
-172.31.3.113 ansible_ssh_user='ec2-user'
+172.31.2.29 ansible_ssh_user='ec2-user'
 
-[todo]
-172.31.11.178
 
 [db]
-172.31.7.194 ansible_ssh_user='ubuntu'
+172.31.6.200 ansible_ssh_user='ubuntu'
 
-[artifactory]
-172.31.0.71
 
-[sonar]
-172.31.15.61 ansible_ssh_user='ubuntu'
