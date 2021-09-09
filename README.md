@@ -58,6 +58,14 @@ source ~/.bash_profile
 - chmod +x phpunit
 - sudo yum  install php-xdebug
 
+#### for database connection
+====================================
+DB_CONNECTION=mysql
+DB_PORT=3306
+
+sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo yum install mysql -y
+
 Learn how to install Jenkins [here](https://www.jenkins.io/doc/book/installing/)
 
 Learn how to installk artifactory [here](https://jfrog.com/open-source/)
