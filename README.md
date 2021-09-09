@@ -25,7 +25,7 @@ export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar
 source ~/.bash_profile
 
 
-# Install remi repo, php
+# Install  php
 =====================================
 - yum module reset php -y
 - yum module enable php:remi-7.4 -y
@@ -44,7 +44,6 @@ source ~/.bash_profile
 
 # Install composer
 =====================================
-- yum install wget 
 - curl -sS https://getcomposer.org/installer | php 
 - sudo mv composer.phar /usr/bin/composer
 
