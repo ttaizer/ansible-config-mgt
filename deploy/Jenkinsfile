@@ -16,9 +16,5 @@
         }
       }
     }
-  }
-<<<<<<< HEAD
-
-=======
->>>>>>> feature/jenkinspipeline-stages
+    }
 }
