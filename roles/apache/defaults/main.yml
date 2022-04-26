@@ -15,14 +15,13 @@ apache_remove_default_vhost: false
 
 apache_global_vhost_settings: |
   DirectoryIndex index.php index.html
-
 apache_vhosts:
   # Additional properties:
   # 'serveradmin, serveralias, allow_override, options, extra_parameters'.
   - servername: "local.dev"
     documentroot: "/var/www/html"
     loadbalancer_name: "myapp1"
-    
+
 apache_allow_override: "All"
 apache_options: "-Indexes +FollowSymLinks"
 
@@ -50,6 +49,9 @@ apache_mods_disabled: []
 # Set initial apache state. Recommended values: `started` or `stopped`
 apache_state: started
 
+# Set initial apache service status. Recommended values: `yes` or `no`
+apache_enabled: yes
+
 # Set apache state when configuration changes are made. Recommended values:
 # `restarted` or `reloaded`
 apache_restart_state: restarted
@@ -58,10 +60,9 @@ apache_restart_state: restarted
 # if you want to upgrade or switch versions using a new repo.
 apache_packages_state: present
 
-enable_apache_lb: false
+enable_nginx_lb: false
 load_balancer_is_required: false
 
-# Webservers
 loadbalancer_name: "myapp1"
-web1: "172.31.18.10 weight=3"
-web2: "172.31.29.153 weight=3"
+web1: "172.31.16.53"
+web2: "172.31.22.57"
