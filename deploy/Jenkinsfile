@@ -10,7 +10,7 @@ pipeline {
 #        steps {
 #          git branch: 'feature/jenkinspipeline-stages', url: 'https://github.com/ttaizer/ansible-config-mgt.git'
 #        }
-      }    
+#      }    
       stage("Initial Cleanup") {
         steps {
           dir("${WORKSPACE}") {
