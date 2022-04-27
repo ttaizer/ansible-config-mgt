@@ -1,51 +1,32 @@
 pipeline {
-    agent any
-
-  stages {
-
-    stage('Initial Clean-up'){
-      steps {
-        dir("${WORKSPACE}") {
-          deleteDir()
-        }
-      }
+    agent any 
+    
+    environment {
+        ANSIBLE_CONGIG_MGT="{$WORKSPACE}"/deploy/ansible.cfg"
     }
-    stage('Build') {
-      steps {
-        script {
-          sh 'echo "Building Stage"'
+       
+    stages {
+      stage('Initial CleanUp') {
+        steps {
+          dir("${WORKSPACE}") {
+            deleteDir()
+          }           
+        }
+          }           
+          }
+        }
+      
+      stage('Checkout SCM') {
+        steps {
+          git branch: 'feature/jenkinspipeline-stages', url: 'https://github.com/Livingstone95/ansible-config.git' 
         }
       }
-    }
 
-    stage('Test') {
-      steps {
-        script {
-          sh 'echo "Testing Stage"'
+      stage('Preparing Ansible for Execution') {
+        steps {
+          sh 'echo ${WORKSPACE}'
+          sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.config
         }
-      }
-    }
 
-    stage('Package'){
-      steps {
-        script {
-          sh 'echo "Packaging App"'
-        }
-      }
-    }
-
-    stage ('Deploy') {
-      steps {
-        script {
-            sh 'echo "Deploying App to Dev"'
-        }
-      }
-    }
-
-    stage('Clean Up'){
-      steps {
-        cleanWs()
-        }
-      }
     }
  }
