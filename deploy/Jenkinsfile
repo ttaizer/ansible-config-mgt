@@ -1,32 +1,47 @@
 pipeline {
-    agent any 
-    
-    environment {
-        ANSIBLE_CONGIG_MGT="{$WORKSPACE}"/deploy/ansible.cfg"
+  agent any
+
+  environment {
+      ANSIBLE_CONFIG_MGT="${WORKSPACE}/deploy/ansible.cfg"
     }
-       
-    stages {
-      stage('Initial CleanUp') {
-        steps {
-          dir("${WORKSPACE}") {
-            deleteDir()
-          }           
-        }
-          }           
+
+  parameters {
+      string(name: 'inventory', defaultValue: 'dev',  description: 'This is the inventory file for the environment to deploy configuration')
+    }
+
+  stages{
+      stage("Initial cleanup") {
+          steps {
+            dir("${WORKSPACE}") {
+              deleteDir()
+            }
           }
         }
-      
+
       stage('Checkout SCM') {
+         steps{
+            git branch: 'feature/jenkinspipeline-stages', url: 'https://github.com/ttaizer/ansible-config-mgt.git'
+         }
+       }
+
+      stage('Prepare Ansible For Execution') {
         steps {
-          git branch: 'feature/jenkinspipeline-stages', url: 'https://github.com/Livingstone95/ansible-config.git' 
+          sh 'echo ${WORKSPACE}' 
+          sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.cfg'  
         }
+     }
+
+      stage('Run Ansible playbook') {
+        steps {
+           ansiblePlaybook become: true, colorized: true, credentialsId: 'private-key', disableHostKeyChecking: true, installation: 'ansible1', inventory: 'inventory/dev', playbook: 'playbooks/site.yml'
+         }
       }
 
-      stage('Preparing Ansible for Execution') {
-        steps {
-          sh 'echo ${WORKSPACE}'
-          sh 'sed -i "3 a roles_path=${WORKSPACE}/roles" ${WORKSPACE}/deploy/ansible.config
+      stage('Clean Workspace after build'){
+        steps{
+          cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenUnstable: true, deleteDirs: true)
         }
+      }
+   }
 
-    }
- }
+}
