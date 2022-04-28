@@ -1,1 +1,13 @@
 {{ artifactory_systemyaml }}
+configVersion: 1
+...
+# common database used by all mission_control services
+shared:
+  database:
+    type: postgresql
+    host: localhost
+    port: 5432
+    name: mission_control
+    ...
+  ...
+...
