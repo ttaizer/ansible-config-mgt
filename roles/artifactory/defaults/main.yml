@@ -62,6 +62,7 @@ artifactory_admin_username: admin
 artifactory_admin_password: password
 
 artifactory_service_file: /lib/systemd/system/artifactory.service
+artifactory_enabled: yes
 
 # Provide binarystore XML content below with 2-space indentation
 artifactory_binarystore: |-
