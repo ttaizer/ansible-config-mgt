@@ -5,9 +5,3 @@
   systemd:
     name: "{{ artifactory_daemon }}"
     state: restarted
-
-- name: stop artifactory
-  become: yes
-  systemd:
-    name: "{{ artifactory_daemon }}"
-    state: stopped
