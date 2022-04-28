@@ -7,7 +7,7 @@ artifactory_version: 7.37.15
 artifactory_nginx_ssl_enabled: false
 
 # Set this to false when ngnix is disabled, defaults to true (implies artifactory uses artifactory_nginx role )
-artifactory_nginx_enabled: true
+artifactory_nginx_enabled: false
 
 # Provide single or HA individual licenses file separated by new line and 2-space indentation and for HA, set artifactory_ha_enabled: true.
 # Example: Replace <license_1> , <license_2> , <license_3> with original licenses
