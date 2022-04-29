@@ -53,7 +53,7 @@
         url: http://3.144.112.236:8082/artifactory/PBL/
         dest: /home/ec2-user/
         url_username: admin
-        url_password: APBKm4qXoDaoE4pTfHAD6iPnJMh  
+        url_password: AP8W15MEueiyD7Qsxnf5QVVt1ce  
 
 
     - name: unzip the artifacts
