@@ -1,7 +1,16 @@
 ---
-- name: restart sonar
-  service: name=sonar state=restarted
-  notify: wait for sonar
+# handlers file for ansible-role-sonarqube/
+- name: "restart SonarQube service"
+  service:
+    name: sonar
+    state: restarted
 
-- name: wait for sonar
-  wait_for: port=9000 delay=3 timeout=300
+- name: "fail if expected sonar version not confirmed"
+  fail:
+    msg: Please check if 'Version' field of http://{{ inventory_hostname }}{{ sonar_web_context }} match to {{ sonar_version }}
+
+- name: "warn about post-upgrade steps"
+  debug:
+    msg:
+      - "SonarQube version changed to {{ sonar_version }} but additional actions required from your side"
+      - "Visit http://{{ inventory_hostname }}{{ sonar_web_context }}/setup to follow the post-upgrade procedure"

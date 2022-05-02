@@ -1,3 +1,7 @@
+.DS_Store
 *.retry
-*/__pycache__
-*.pyc
+.vagrant
+tests/roles
+tests/galaxy_roles
+__pycache__
+INSTALL.rst

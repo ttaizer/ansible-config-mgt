@@ -1,42 +1,34 @@
 ---
 language: python
-services: docker
+
+python:
+  - "3.8"
+
+cache: pip
+
+services:
+  - docker
 
 env:
-  global:
-    - ROLE_NAME: sonar
-  matrix:
-    # LTS.
-    - MOLECULE_DISTRO: centos7
-      MOLECULE_DOCKER_COMMAND: /usr/lib/systemd/systemd
-    - MOLECULE_DISTRO: ubuntu1604
-      MOLECULE_DOCKER_COMMAND: /lib/systemd/systemd
-
-    # Latest.
-    - MOLECULE_DISTRO: centos7
-      MOLECULE_DOCKER_COMMAND: /usr/lib/systemd/systemd
-      MOLECULE_PLAYBOOK: playbook-latest.yml
-    - MOLECULE_DISTRO: ubuntu1604
-      MOLECULE_DOCKER_COMMAND: /lib/systemd/systemd
-      MOLECULE_PLAYBOOK: playbook-latest.yml
-
-    # Web Context.
-    - MOLECULE_DISTRO: ubuntu1604
-      MOLECULE_DOCKER_COMMAND: /lib/systemd/systemd
-      MOLECULE_PLAYBOOK: playbook-web-context.yml
+  - MOLECULE_DISTRO=centos7
+  # - MOLECULE_DISTRO=ubuntu1804
+  # - MOLECULE_DISTRO=ubuntu1604
+  - MOLECULE_DISTRO=debian9
+  # - MOLECULE_DISTRO=debian10
 
 install:
-  # Install test dependencies.
-  - pip install molecule docker
+  - pip install --quiet yamllint
+  - pip install --quiet ansible
+  - pip install --quiet molecule
+  - pip install --quiet 'molecule[docker]'
+  - pip install --quiet ansible-lint
+  - pip install --quiet flake8
 
 before_script:
-  # Use actual Ansible Galaxy role name for the project directory.
-  - cd ../
-  - mv ansible-role-$ROLE_NAME geerlingguy.$ROLE_NAME
-  - cd geerlingguy.$ROLE_NAME
+  - molecule --version
+  - ansible --version
 
 script:
-  # Run tests.
   - molecule test
 
 notifications:

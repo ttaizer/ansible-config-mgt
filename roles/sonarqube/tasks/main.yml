@@ -1,67 +1,75 @@
 ---
-- name: Create a database for Sonar.
-  mysql_db:
-    name: "{{ sonar_mysql_database }}"
+# tasks file for ansible-role-sonarqube/
+
+- name: "Create SonarQube system group"
+  group:
+    name: "{{ sonar_group }}"
     state: present
 
-- name: Create a sonar user.
-  mysql_user:
-    name: "{{ sonar_mysql_username }}"
-    host: "{{ item }}"
-    priv: "{{ sonar_mysql_database }}.*:ALL"
-    password: "{{ sonar_mysql_password }}"
-  with_items: "{{ sonar_mysql_allowed_hosts }}"
+- name: "Create SonarQube system user"
+  user:
+    name: "{{ sonar_user }}"
+    group: "{{ sonar_group }}"
+    createhome: no
+    shell: "/sbin/nologin"
+    comment: "SonarQube System user"
+    state: present
 
-- name: Download Sonar.
-  get_url:
-    url: "{{ sonar_download_url }}"
-    dest: "{{ workspace }}/{{ sonar_version_directory }}.zip"
-    validate_certs: "{{ sonar_download_validate_certs }}"
-
-- name: Unzip Sonar.
-  unarchive:
-    src: "{{ workspace }}/{{ sonar_version_directory }}.zip"
-    dest: /usr/local/
-    copy: false
-    creates: /usr/local/sonar/COPYING
-
-- name: Move Sonar into place.
-  command: >
-    mv /usr/local/{{ sonar_version_directory }} /usr/local/sonar
-    creates=/usr/local/sonar/COPYING
-
-- include: configure.yml
-
-- name: Symlink sonar bin.
+- name: "Create SonarQube directories"
   file:
-    src: /usr/local/sonar/bin/linux-x86-64/sonar.sh
-    dest: /usr/bin/sonar
-    state: link
-  register: sonar_symlink
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ sonar_user }}"
+    group: "{{ sonar_group }}"
+    mode: "u=rwx,g=rx,o="
+  with_items:
+    - "{{ sonar_install_directory }}"
+    - "{{ sonar_logs_dir }}"
+    - "{{ sonar_data_dir }}"
+    - "{{ sonar_temp_dir }}"
 
-- name: Add sonar as init script for service management.
-  file:
-    src: /usr/local/sonar/bin/linux-x86-64/sonar.sh
-    dest: /etc/init.d/sonar
-    state: link
-  when: "ansible_service_mgr != 'systemd'"
+- name: "set max_map_count value (required by elasticsearch)"
+  sysctl:
+    name: vm.max_map_count
+    value: 262144
+    state: present
 
-- name: Copy SonarQube systemd unit file into place (for systemd systems).
-  template:
-    src: sonar.unit.j2
-    dest: /etc/systemd/system/sonar.service
-    owner: root
-    group: root
-    mode: 0755
-  when: "ansible_service_mgr == 'systemd'"
+- name: "Ensure JAVA is installed"
+  command: "java -version"
+  register: prereq_java
+  changed_when: false
 
-- name: Ensure Sonar is running and set to start on boot.
-  service: name=sonar state=started enabled=yes
+- name: "Fail if JAVA is not available"
+  fail:
+    msg: "JAVA is not installed or configured"
+  when: not prereq_java.rc == 0
 
-- name: Allow Sonar time to build on first start.
-  pause: seconds=180
-  when: sonar_symlink.changed
-  tags: ['skip_ansible_lint']
+- name: "Execute Debian specific tasks"
+  include_tasks: setup_debian.yml
+  when: ansible_os_family == 'Debian'
 
-- name: Make sure Sonar is responding on the configured port.
-  wait_for: port=9000 delay=3 timeout=300
+- include_tasks: setup_prepare.yml
+
+- include_tasks: setup_sonarqube.yml
+
+- include_tasks: setup_plugin.yml
+  with_items: "{{ sonar_plugins }}"
+  loop_control:
+    loop_var: "sonar_cplugin"
+
+- name: "flush handlers"
+  meta: flush_handlers
+
+- name: "Ensure target version matches"
+  uri:
+    url: "http://{{ sonar_web_host }}:{{ sonar_web_port }}{{ sonar_web_context }}/api/server/version"
+    method: GET
+    return_content: yes
+  register: api_check_version
+  until: api_check_version.status == 200
+  retries: 60
+  delay: 5
+  check_mode: no # uri module not support check mode (at least in Ansible 2.10)
+  changed_when: sonar_version | string not in api_check_version.content
+  notify: fail if expected sonar version not confirmed
+  ignore_errors: "{{ ansible_check_mode }}"

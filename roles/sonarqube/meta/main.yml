@@ -1,28 +1,25 @@
----
-dependencies:
-  - geerlingguy.java
-  - geerlingguy.mysql
-
 galaxy_info:
-  author: geerlingguy
-  description: SonarQube for Linux
-  company: "Midwestern Mac, LLC"
-  license: "license (BSD, MIT)"
-  min_ansible_version: 2.0
+  author: lrk
+  role_name: sonarqube
+  description: "An Ansible Role that install SonarQube."
+  license: "Apache License Version 2.0"
+
+  min_ansible_version: 2.4
+
   platforms:
     - name: EL
       versions:
-        - all
-    - name: Debian
-      versions:
-        - all
+        - 7
     - name: Ubuntu
       versions:
-        - all
+        - Bionic
+        - Xenial
+    - name: Debian
+      versions:
+        - Stretch
+
   galaxy_tags:
-    - development
-    - monitoring
-    - sonar
-    - sonarqube
-    - codequality
-    - scanner
+    - 'centos'
+    - 'development'
+    - 'monitoring'
+    - 'sonarqube'
